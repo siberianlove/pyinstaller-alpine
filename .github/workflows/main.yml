@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10"]
-        alpine_version: ["3.12", "3.13", "3.14"]
-        pyinstaller_tag: ["3.6", "4.3"]
+        python: ["3.12"]
+        alpine_version: ["3.19"]
+        pyinstaller_tag: ["6.5.0"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
