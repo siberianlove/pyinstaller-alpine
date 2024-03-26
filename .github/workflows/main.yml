@@ -21,7 +21,7 @@ jobs:
       matrix:
         python_version: ["3.12"]
         alpine_version: ["3.19"]
-        pyinstaller_tag: ["6.5.0"]
+        pyinstaller_tag: ["v6.5.0"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
