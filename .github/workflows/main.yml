@@ -38,16 +38,19 @@ jobs:
           # repository for the Container Image in GitHub Packages.
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build container image
-        run: |
-          export SOURCE_COMMIT=${{ github.sha }}
-          export SOURCE_REF=${{ github.ref }}
-
-          ./build.sh \
-            "${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}"
-            "${{ matrix.pyinstaller_tag }}"
-            "${{ matrix.alpine_version }}"
-            "${{ matrix.python_version }}"
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: "${{ env.GITHUB_REPOSITORY }}:alpine${{ matrix.alpine_version }}-python${{ matrix.python_version }}-pyinstaller${{ matrix.pyinstaller_tag }}"
+          platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+          build-args: |
+            SOURCE_COMMIT=${{ env.GITHUB_SHA }}
+            SOURCE_REF=${{ env.GITHUB_HEAD_REF }}
+            PYINSTALLER_TAG=${{ matrix.pyinstaller_tag }}
+            PYTHON_VERSION=${{ matrix.python_version }}
+            ALPINE_VERSION=${{ matrix.alpine_version }}
 
 #      - name: Push container image
 #        if: ${{ github.event_name != 'pull_request' && !env.ACT}}
